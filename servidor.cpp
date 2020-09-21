@@ -1,9 +1,7 @@
 #include "hosts.h"
 
 int main() 
-{ 
-	map<string, string> hosts;
-    
+{   
     while (true) {
         string comando;
         cin >> comando;

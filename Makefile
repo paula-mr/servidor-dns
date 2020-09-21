@@ -1,2 +1,6 @@
 all:
-	g++ -Wall -g -o servidor servidor.cpp
+	g++ -Wall -c hosts.cpp
+	g++ -Wall servidor.cpp hosts.o -o servidor
+
+clean:
+	rm hosts.o servidor

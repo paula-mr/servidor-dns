@@ -1,5 +1,7 @@
 #include "hosts.h"
 
+map<string, string> hosts;
+
 void save(string hostname, string ip) {
     hosts[hostname] = ip;
 
