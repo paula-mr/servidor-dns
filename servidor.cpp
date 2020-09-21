@@ -1,8 +1,4 @@
-#include <iostream> 
-#include <map>
-#include <string>
-
-using namespace std; 
+#include "hosts.h"
 
 int main() 
 { 
@@ -13,17 +9,13 @@ int main()
         cin >> comando;
 
         if (comando.compare("add") == 0) {
-            string hostname;
-            string ip;
-            cin >> hostname;
-            cin >> ip;
-
-            cout << "hostname: " << hostname << " ip: " << ip << endl;
+            string hostname, ip;
+            cin >> hostname >> ip;
+            save(hostname, ip);
         } else if (comando.compare("search") == 0) {
             string hostname;
             cin >> hostname;
-
-            cout << "hostname: " << hostname << endl;
+            search(hostname);
         } else if (comando.compare("link") == 0) {
             string porta;
             string ip;
