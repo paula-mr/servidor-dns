@@ -11,9 +11,9 @@ int main()
             cin >> hostname >> ip;
             save(hostname, ip);
         } else if (comando.compare("search") == 0) {
-            string hostname;
+            string hostname, ip;
             cin >> hostname;
-            search(hostname);
+            ip = search(hostname);
         } else if (comando.compare("link") == 0) {
             string porta;
             string ip;

@@ -8,10 +8,12 @@ void save(string hostname, string ip) {
     cout << "salvo hostname: " << hostname << " ip: " << ip << endl;
 }
 
-void search(string hostname) {
+string search(string hostname) {
     if (hosts.find(hostname) != hosts.end()) {
         cout << "hostname: " << hosts[hostname] << endl;
+        return hosts[hostname];
     } else {
         cout << "hostname: " << hostname << " não encontrado" << endl;
     }
+    return "";
 }

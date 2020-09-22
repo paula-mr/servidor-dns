@@ -7,4 +7,4 @@
 using namespace std; 
 
 void save(string hostname, string ip);
-void search(string hostname);
+string search(string hostname);
