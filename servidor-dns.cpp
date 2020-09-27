@@ -1,7 +1,14 @@
 #include "hosts.h"
+#include "thread.h"
 
 int main() 
 {   
+    pthread_t thread_id;
+
+    char* port = "80";
+
+    start_connection_handler(port);
+
     while (true) {
         string comando;
         cin >> comando;
