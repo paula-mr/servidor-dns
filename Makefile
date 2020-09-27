@@ -1,6 +1,6 @@
 all:
 	g++ -Wall -c hosts.cpp
-	g++ -Wall servidor.cpp hosts.o -o servidor
+	g++ -Wall servidor-dns.cpp hosts.o -o servidor-dns
 
 clean:
-	rm hosts.o servidor
+	rm hosts.o servidor-dns
