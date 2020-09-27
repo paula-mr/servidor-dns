@@ -13,7 +13,7 @@ string search(string hostname) {
         cout << "hostname: " << hosts[hostname] << endl;
         return hosts[hostname];
     } else {
-        cout << "hostname: " << hostname << " não encontrado" << endl;
+        cout << "hostname \"" << hostname << "\" não encontrado" << endl;
     }
     return "";
 }
