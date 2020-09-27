@@ -2,6 +2,7 @@
 #include "communication-udp.h"
 
 #include <iostream> 
+#include <pthread.h>
 
 using namespace std; 
 
