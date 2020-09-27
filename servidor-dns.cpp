@@ -1,4 +1,5 @@
 #include "hosts.h"
+#include "links.h"
 #include "thread.h"
 
 int main() 
@@ -16,18 +17,19 @@ int main()
         if (comando.compare("add") == 0) {
             string hostname, ip;
             cin >> hostname >> ip;
-            save(hostname, ip);
+            saveHost(hostname, ip);
         } else if (comando.compare("search") == 0) {
             string hostname, ip;
             cin >> hostname;
-            ip = search(hostname);
+            ip = searchHost(hostname);
         } else if (comando.compare("link") == 0) {
             string porta;
             string ip;
             cin >> ip;
             cin >> porta;
 
-            cout << "ip: " << ip << " porta: " << porta << endl;
+            saveLink(ip, porta);
+            listLinks();
         } else {
             cout << "Comando não encontrado." << endl;
         }

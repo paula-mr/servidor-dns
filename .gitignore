@@ -32,3 +32,5 @@ servidor
 *.exe
 *.out
 *.app
+
+.vscode

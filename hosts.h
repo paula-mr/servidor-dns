@@ -6,5 +6,5 @@
 
 using namespace std; 
 
-void save(string hostname, string ip);
-string search(string hostname);
+void saveHost(string hostname, string ip);
+string searchHost(string hostname);

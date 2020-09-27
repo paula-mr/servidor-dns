@@ -2,18 +2,18 @@
 
 map<string, string> hosts;
 
-void save(string hostname, string ip) {
+void saveHost(string hostname, string ip) {
     hosts[hostname] = ip;
 
-    cout << "salvo hostname: " << hostname << " ip: " << ip << endl;
+    cout << "Salvo hostname: " << hostname << "; ip: " << ip << endl;
 }
 
-string search(string hostname) {
+string searchHost(string hostname) {
     if (hosts.find(hostname) != hosts.end()) {
-        cout << "hostname: " << hosts[hostname] << endl;
+        cout << "Hostname: " << hosts[hostname] << endl;
         return hosts[hostname];
     } else {
-        cout << "hostname \"" << hostname << "\" não encontrado" << endl;
+        cout << "Hostname \"" << hostname << "\" não encontrado." << endl;
     }
     return "";
 }
