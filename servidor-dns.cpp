@@ -6,7 +6,7 @@ int main()
 {   
     pthread_t thread_id;
 
-    char* port = "80";
+    char* port = "8080";
 
     start_connection_handler(port);
 
