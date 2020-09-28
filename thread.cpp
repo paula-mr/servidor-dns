@@ -13,13 +13,13 @@ void start_connection_handler(char* port) {
     if (pthread_create(&thread_id, NULL, connection_handler, (void*) port) < 0) {
         perror("Não foi possível iniciar a thread.");
     }
-    cout << "Thread de conexões aberta com sucesso!\n";
+    cout << "Thread de conexões aberta com sucesso! Iniciando servidor...\n";
 }
 
 void *connection_handler(void *portValue) {
-    char *portString = (char *)portValue; 
-    createServer(portString);
-    cout << "Servidor iniciado!";
+    char* port = (char*)portValue; 
+    createServer(atoi(port));
+    cout << "Servidor iniciado!\n";
 
     return 0;
 }

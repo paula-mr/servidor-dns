@@ -2,6 +2,8 @@
 #include "links.h"
 #include "thread.h"
 
+#include <unistd.h>
+
 int main() 
 {   
     pthread_t thread_id;
@@ -9,9 +11,11 @@ int main()
     char* port = "8080";
 
     start_connection_handler(port);
+    sleep(1);
 
     while (true) {
         string comando;
+        cout << "Digite o seu comando: ";
         cin >> comando;
 
         if (comando.compare("add") == 0) {
