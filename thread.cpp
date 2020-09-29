@@ -18,8 +18,14 @@ void start_connection_handler(char* port) {
 
 void *connection_handler(void *portValue) {
     char* port = (char*)portValue; 
-    createServer(atoi(port));
+    struct sockaddr addressConnected;
+
+    int sock = createServer(atoi(port), &addressConnected);
     cout << "Servidor iniciado!\n";
+
+    /*while (true) {
+        receiveMessage(&addressConnected);
+    }*/
 
     return 0;
 }

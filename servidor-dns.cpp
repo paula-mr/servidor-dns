@@ -1,14 +1,18 @@
 #include "hosts.h"
 #include "links.h"
 #include "thread.h"
+#include "communication-udp.h"
 
 #include <unistd.h>
+#include <string.h>
 
-int main() 
+string searchOtherServers(string hostname);
+
+int main(int argc, char **argv) 
 {   
     pthread_t thread_id;
 
-    char* port = "8080";
+    char* port = argv[1];
 
     start_connection_handler(port);
     sleep(1);
@@ -26,14 +30,17 @@ int main()
             string hostname, ip;
             cin >> hostname;
             ip = searchHost(hostname);
+            if (ip.compare("") == 0) {
+                printf("host não encontrado");
+                ip = searchOtherServers(hostname);
+            }
         } else if (comando.compare("link") == 0) {
-            string porta;
-            string ip;
+            char* ip;
+            int porta;
             cin >> ip;
             cin >> porta;
 
             saveLink(ip, porta);
-            listLinks();
         } else {
             cout << "Comando não encontrado." << endl;
         }
@@ -42,3 +49,13 @@ int main()
 
     return 0;
 } 
+
+string searchOtherServers(string hostname) {
+    list<struct sockaddr*> links = listLinks();
+    printf("Procurando em outros servers\n");
+    for (auto itr = links.begin(); itr != links.end(); ++itr) { 
+        printf("realizando parse do end");
+
+        sendMessage(*itr, "oi");
+    }
+}

@@ -7,6 +7,8 @@
 #define BUFSZ 1024
 #define VERSION "v4"
 
-int createServer(int port);
-int parseAddress(const char *addrstr, const char *portstr, struct sockaddr_storage *storage);
+int createServer(int port, struct sockaddr *storage);
+int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage);
 void printAddress(const struct sockaddr *addr);
+void receiveMessage(struct sockaddr *address);
+void sendMessage(struct sockaddr *address, char* message);

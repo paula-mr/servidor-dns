@@ -1,20 +1,26 @@
 #include "communication-udp.h"
 
-#include <inttypes.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <unistd.h> 
+#include <string.h> 
+#include <sys/types.h> 
+#include <sys/socket.h> 
+#include <arpa/inet.h> 
+#include <netinet/in.h> 
 #include <string.h>
 
 #include <arpa/inet.h>
 
-int createServer(int port) {
-    int sock; 
-    const struct sockaddr *addressConnected;
+#define MAXLINE 1024 
 
+int SOCKET_VALUE;
+
+int createServer(int port, struct sockaddr *addressConnected) {
     if (0 == strcmp(VERSION, "v4")) {
         struct sockaddr_in address; 
-        if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) { 
-            perror("Erro ao iniciar socker"); 
+        if ((SOCKET_VALUE = socket(AF_INET, SOCK_DGRAM, 0)) < 0) { 
+            perror("Erro ao iniciar socket"); 
             exit(EXIT_FAILURE); 
         } 
         memset(&address, 0, sizeof(address)); 
@@ -24,20 +30,20 @@ int createServer(int port) {
         address.sin_port = htons(port); 
 
         int enable = 1;
-        if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
+        if (setsockopt(SOCKET_VALUE, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
         {
             perror("Erro ao configurar socket");
             exit(EXIT_FAILURE);
         }
         
-        addressConnected = (const struct sockaddr *)&address;
-        if (bind(sock, addressConnected, sizeof(address)) < 0) { 
+        addressConnected = (struct sockaddr *)&address;
+        if (bind(SOCKET_VALUE, addressConnected, sizeof(address)) < 0) { 
             perror("Erro ao fazer bind"); 
             exit(EXIT_FAILURE); 
         } 
     } else {
         struct sockaddr_in6 address; 
-        if ((sock = socket(AF_INET6, SOCK_DGRAM, 0)) < 0) { 
+        if ((SOCKET_VALUE = socket(AF_INET6, SOCK_DGRAM, 0)) < 0) { 
             perror("Erro ao iniciar socker"); 
             exit(EXIT_FAILURE); 
         } 
@@ -48,14 +54,14 @@ int createServer(int port) {
         address.sin6_addr = in6addr_any;
 
         int enable = 1;
-        if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
+        if (setsockopt(SOCKET_VALUE, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
         {
             perror("Erro ao configurar socket");
             exit(EXIT_FAILURE);
         }
         
-        addressConnected = (const struct sockaddr *)&address;
-        if (bind(sock, addressConnected, sizeof(address)) < 0) { 
+        addressConnected = (struct sockaddr *)&address;
+        if (bind(SOCKET_VALUE, addressConnected, sizeof(address)) < 0) { 
             perror("Erro ao fazer bind"); 
             exit(EXIT_FAILURE); 
         } 
@@ -63,25 +69,43 @@ int createServer(int port) {
 
     printAddress(addressConnected);
 
-    return sock;
+    return SOCKET_VALUE;
 }
 
-int parseAddress(const char *addrstr, const char *portstr, struct sockaddr_storage *storage) {
-    if (addrstr == NULL || portstr == NULL)
-    {
+void sendMessage(struct sockaddr *address, char* message) {
+    printf("cheguei");
+
+    socklen_t len = sizeof(*address);
+    //TODO trocar 0 para MSG_CONFIRM
+    sendto(SOCKET_VALUE, (const char *)message, strlen(message), 0, (const struct sockaddr *) &address, len); 
+    printf("enviada com sucesso");
+
+}
+
+void receiveMessage(struct sockaddr *address) {
+    char buffer[MAXLINE]; 
+    struct sockaddr_in servaddr, cliaddr; 
+    memset(&cliaddr, 0, sizeof(cliaddr)); 
+    socklen_t len = sizeof(*address);
+    printf("estoy aqui");
+    int n = recvfrom(SOCKET_VALUE, (char *)buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliaddr, &len); 
+    buffer[n] = '\0'; 
+    printf("estoy aqui 2");
+
+    printf(buffer);
+}
+
+int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage) {
+    if (addrstr == NULL || portValue == NULL) {
         return -1;
     }
 
-    uint16_t port = (uint16_t)atoi(portstr);
-    if (port == 0)
-    {
-        return -1;
-    }
-    port = htons(port);
+    uint16_t port = htons(portValue);
+
+    printf("ate aq ok\n");
 
     struct in_addr inaddr4;
-    if (inet_pton(AF_INET, addrstr, &inaddr4))
-    {
+    if (inet_pton(AF_INET, addrstr, &inaddr4)) {
         struct sockaddr_in *addr4 = (struct sockaddr_in *)storage;
         addr4->sin_family = AF_INET;
         addr4->sin_port = port;
@@ -90,8 +114,7 @@ int parseAddress(const char *addrstr, const char *portstr, struct sockaddr_stora
     }
 
     struct in6_addr inaddr6;
-    if (inet_pton(AF_INET6, addrstr, &inaddr6))
-    {
+    if (inet_pton(AF_INET6, addrstr, &inaddr6)) {
         struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)storage;
         addr6->sin6_family = AF_INET6;
         addr6->sin6_port = port;
@@ -108,8 +131,7 @@ void printAddress(const struct sockaddr *addr) {
     uint16_t port;
     char str[BUFSZ];
 
-    if (addr->sa_family == AF_INET)
-    {
+    if (addr->sa_family == AF_INET) {
         version = 4;
         struct sockaddr_in *addr4 = (struct sockaddr_in *)addr;
         if (!inet_ntop(AF_INET, &(addr4->sin_addr), addrstr,
@@ -119,9 +141,7 @@ void printAddress(const struct sockaddr *addr) {
             exit(EXIT_FAILURE);
         }
         port = ntohs(addr4->sin_port);
-    }
-    else if (addr->sa_family == AF_INET6)
-    {
+    } else if (addr->sa_family == AF_INET6) {
         version = 6;
         struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)addr;
         if (!inet_ntop(AF_INET6, &(addr6->sin6_addr), addrstr,
@@ -131,9 +151,7 @@ void printAddress(const struct sockaddr *addr) {
             exit(EXIT_FAILURE);
         }
         port = ntohs(addr6->sin6_port);
-    }
-    else
-    {
+    } else {
         printf("Protocolo desconhecido");
         exit(EXIT_FAILURE);
     }
