@@ -102,8 +102,6 @@ int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *st
 
     uint16_t port = htons(portValue);
 
-    printf("ate aq ok\n");
-
     struct in_addr inaddr4;
     if (inet_pton(AF_INET, addrstr, &inaddr4)) {
         struct sockaddr_in *addr4 = (struct sockaddr_in *)storage;
