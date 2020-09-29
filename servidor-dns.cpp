@@ -58,4 +58,6 @@ string searchOtherServers(string hostname) {
 
         sendMessage(*itr, "oi");
     }
+
+    return "";
 }

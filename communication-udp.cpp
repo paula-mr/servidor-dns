@@ -73,13 +73,10 @@ int createServer(int port, struct sockaddr *addressConnected) {
 }
 
 void sendMessage(struct sockaddr *address, char* message) {
-    printf("cheguei");
-
     socklen_t len = sizeof(*address);
     //TODO trocar 0 para MSG_CONFIRM
     sendto(SOCKET_VALUE, (const char *)message, strlen(message), 0, (const struct sockaddr *) &address, len); 
-    printf("enviada com sucesso");
-
+    printf("Enviada com sucesso!\n");
 }
 
 void receiveMessage(struct sockaddr *address) {
@@ -87,12 +84,11 @@ void receiveMessage(struct sockaddr *address) {
     struct sockaddr_in servaddr, cliaddr; 
     memset(&cliaddr, 0, sizeof(cliaddr)); 
     socklen_t len = sizeof(*address);
-    printf("estoy aqui");
     int n = recvfrom(SOCKET_VALUE, (char *)buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliaddr, &len); 
     buffer[n] = '\0'; 
     printf("estoy aqui 2");
 
-    printf(buffer);
+    printf("%s", buffer);
 }
 
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage) {

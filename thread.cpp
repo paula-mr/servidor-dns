@@ -23,9 +23,9 @@ void *connection_handler(void *portValue) {
     int sock = createServer(atoi(port), &addressConnected);
     cout << "Servidor iniciado!\n";
 
-    /*while (true) {
+    while (true) {
         receiveMessage(&addressConnected);
-    }*/
+    }
 
     return 0;
 }
