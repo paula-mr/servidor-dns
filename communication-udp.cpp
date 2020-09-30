@@ -8,7 +8,6 @@
 #include <sys/socket.h> 
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
-#include <string.h>
 
 #include <arpa/inet.h>
 
@@ -88,16 +87,25 @@ void sendMessage(string ip, int port, char* message) {
     printf("Enviada com sucesso!\n");
 }
 
-void receiveMessage(struct sockaddr *address) {
+char* receiveMessage(struct sockaddr *address) {
     char buffer[MAXLINE]; 
-    struct sockaddr_in cliaddr; 
-    memset(&cliaddr, 0, sizeof(cliaddr)); 
-    socklen_t len = sizeof(cliaddr);
-    int n = recvfrom(SOCKET_VALUE, (char *)buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliaddr, &len); 
+    socklen_t len = sizeof(address);
+    int n = recvfrom(SOCKET_VALUE, (char *)buffer, MAXLINE, MSG_WAITALL, address, &len); 
     buffer[n] = '\0'; 
-    printf("estoy aqui 2");
 
-    printf("%s", buffer);
+    printf("Mensagem: %s \n", buffer);
+
+    if (buffer[0] != '1') {
+        printf("Mensagem desconhecida.");
+        return "";
+    }
+
+    char host[n-1];
+    for (int i=0; i<n-1; i++) {
+        host[i] = buffer[i+1];
+    }
+
+    return host;
 }
 
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage) {

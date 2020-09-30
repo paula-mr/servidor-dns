@@ -31,7 +31,6 @@ int main(int argc, char **argv)
             cin >> hostname;
             ip = searchHost(hostname);
             if (ip.compare("") == 0) {
-                printf("host não encontrado");
                 ip = searchOtherServers(hostname);
             }
         } else if (comando.compare("link") == 0) {

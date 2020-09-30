@@ -1,8 +1,12 @@
 #include "thread.h"
 #include "communication-udp.h"
+#include "hosts.h"
 
 #include <iostream> 
 #include <pthread.h>
+#include <string>
+#include <stdio.h> 
+#include <stdlib.h> 
 
 using namespace std; 
 
@@ -24,7 +28,18 @@ void *connection_handler(void *portValue) {
     cout << "Servidor iniciado!\n";
 
     while (true) {
-        receiveMessage(&addressConnected);
+        char* host = receiveMessage(&addressConnected);
+        string hostString(host);
+        string result = searchHost(hostString);
+
+        if (result.compare("") == 0) {
+            printf("host não encontrado\n");
+            char buffer[2];
+            buffer[0] = '2';
+            buffer[1] = '-1';
+
+            //sendMessage();
+        }
     }
 
     return 0;
