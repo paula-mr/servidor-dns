@@ -15,56 +15,34 @@
 
 int SOCKET_VALUE;
 
+int initializeSocketAddress(const char *proto, int port, struct sockaddr_storage *storage);
+
 int createServer(int port, struct sockaddr *addressConnected) {
-    if (0 == strcmp(VERSION, "v4")) {
-        struct sockaddr_in address; 
-        if ((SOCKET_VALUE = socket(AF_INET, SOCK_DGRAM, 0)) < 0) { 
-            perror("Erro ao iniciar socket"); 
-            exit(EXIT_FAILURE); 
-        } 
-        memset(&address, 0, sizeof(address)); 
-        
-        address.sin_family = AF_INET; 
-        address.sin_addr.s_addr = INADDR_ANY; 
-        address.sin_port = htons(port); 
-
-        int enable = 1;
-        if (setsockopt(SOCKET_VALUE, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
-        {
-            perror("Erro ao configurar socket");
-            exit(EXIT_FAILURE);
-        }
-        
-        addressConnected = (struct sockaddr *)&address;
-        if (bind(SOCKET_VALUE, addressConnected, sizeof(address)) < 0) { 
-            perror("Erro ao fazer bind"); 
-            exit(EXIT_FAILURE); 
-        } 
-    } else {
-        struct sockaddr_in6 address; 
-        if ((SOCKET_VALUE = socket(AF_INET6, SOCK_DGRAM, 0)) < 0) { 
-            perror("Erro ao iniciar socker"); 
-            exit(EXIT_FAILURE); 
-        } 
-        memset(&address, 0, sizeof(address)); 
-        
-        address.sin6_family = AF_INET6;
-        address.sin6_port = htons(port);
-        address.sin6_addr = in6addr_any;
-
-        int enable = 1;
-        if (setsockopt(SOCKET_VALUE, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
-        {
-            perror("Erro ao configurar socket");
-            exit(EXIT_FAILURE);
-        }
-        
-        addressConnected = (struct sockaddr *)&address;
-        if (bind(SOCKET_VALUE, addressConnected, sizeof(address)) < 0) { 
-            perror("Erro ao fazer bind"); 
-            exit(EXIT_FAILURE); 
-        } 
+    struct sockaddr_storage storage;
+    memset(&storage, 0, sizeof(storage)); 
+    if (initializeSocketAddress(VERSION, port, &storage) != 0)
+    {
+        printf("Argumentos passados incorretos. Necessário especificar tipo de endereço e porta.");
+        exit(EXIT_FAILURE);
     }
+
+    if ((SOCKET_VALUE = socket(AF_INET, SOCK_DGRAM, 0)) < 0) { 
+        perror("Erro ao iniciar socket"); 
+        exit(EXIT_FAILURE); 
+    } 
+
+    int enable = 1;
+    if (setsockopt(SOCKET_VALUE, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
+    {
+        perror("Erro ao configurar socket");
+        exit(EXIT_FAILURE);
+    }
+
+    addressConnected = (struct sockaddr *)&storage;
+    if (bind(SOCKET_VALUE, addressConnected, sizeof(storage)) < 0) { 
+        perror("Erro ao fazer bind"); 
+        exit(EXIT_FAILURE); 
+    } 
 
     printAddress(addressConnected);
 
@@ -169,4 +147,32 @@ void printAddress(const struct sockaddr *addr) {
 
     snprintf(str, BUFSZ, "IPv%d %s %hu", version, addrstr, port);
     printf("Conectado em %s.\n", str);
+}
+
+int initializeSocketAddress(const char *proto, int port,
+                            struct sockaddr_storage *storage)
+{
+    uint16_t port = htons(port);
+
+    memset(storage, 0, sizeof(*storage));
+    if (0 == strcmp(proto, "v4"))
+    {
+        struct sockaddr_in *addr4 = (struct sockaddr_in *)storage;
+        addr4->sin_family = AF_INET;
+        addr4->sin_addr.s_addr = INADDR_ANY;
+        addr4->sin_port = port;
+        return 0;
+    }
+    else if (0 == strcmp(proto, "v6"))
+    {
+        struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)storage;
+        addr6->sin6_family = AF_INET6;
+        addr6->sin6_addr = in6addr_any;
+        addr6->sin6_port = port;
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }
