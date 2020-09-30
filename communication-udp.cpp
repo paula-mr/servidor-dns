@@ -9,7 +9,6 @@
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
 #include <string.h>
-#include <string>
 
 #include <arpa/inet.h>
 
@@ -78,7 +77,7 @@ void sendMessage(string ip, int port, char* message) {
     memset(&address, 0, sizeof(address)); 
 
     struct in_addr inaddr4;
-    inet_pton(AF_INET, ip, &inaddr4);
+    inet_pton(AF_INET, ip.c_str(), &inaddr4);
 
     address.sin_family = AF_INET; 
     address.sin_port = htons(port); 

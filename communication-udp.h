@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include <string>
 #include <arpa/inet.h>
 
 #define BUFSZ 1024
