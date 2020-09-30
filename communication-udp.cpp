@@ -81,7 +81,7 @@ void sendMessage(struct sockaddr *address, char* message) {
 
 void receiveMessage(struct sockaddr *address) {
     char buffer[MAXLINE]; 
-    struct sockaddr_in servaddr, cliaddr; 
+    struct sockaddr_in cliaddr; 
     memset(&cliaddr, 0, sizeof(cliaddr)); 
     socklen_t len = sizeof(*address);
     int n = recvfrom(SOCKET_VALUE, (char *)buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliaddr, &len); 
@@ -92,7 +92,7 @@ void receiveMessage(struct sockaddr *address) {
 }
 
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage) {
-    if (addrstr == NULL || portValue == NULL) {
+    if (addrstr == NULL) {
         return -1;
     }
 

@@ -54,8 +54,11 @@ string searchOtherServers(string hostname) {
     printf("Procurando em outros servers\n");
     for (auto itr = links.begin(); itr != links.end(); ++itr) { 
         printf("realizando parse do end");
-
-        sendMessage(*itr, "oi");
+        char buffer[3];
+        buffer[0] = 'o';
+        buffer[1] = 'i';
+        buffer[2] = '\0';
+        sendMessage(*itr, buffer);
     }
 
     return "";
