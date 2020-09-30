@@ -53,12 +53,15 @@ string searchOtherServers(string hostname) {
     set< pair<char*, int> > links  = listLinks();
     printf("Procurando em outros servers\n");
 
+    char buffer[1 + hostname.length()];
+    buffer[0] = '1';
+
+    for (int i=0; i < hostname.length(); i++) {
+        buffer[i+1] = hostname[i];
+    }
+
     for (auto itr = links.begin(); itr != links.end(); ++itr) { 
-        printf("realizando parse do end");
-        char buffer[3];
-        buffer[0] = 'o';
-        buffer[1] = 'i';
-        buffer[2] = '\0';
+        printf("enviando mensagem");
         sendMessage(itr->first, itr->second, buffer);
     }
 
