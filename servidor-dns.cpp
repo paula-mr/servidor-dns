@@ -35,10 +35,9 @@ int main(int argc, char **argv)
                 ip = searchOtherServers(hostname);
             }
         } else if (comando.compare("link") == 0) {
-            char* ip;
+            char ip[45];
             int porta;
-            cin >> ip;
-            cin >> porta;
+            cin >> ip >> porta;
 
             saveLink(ip, porta);
         } else {
