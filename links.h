@@ -8,4 +8,4 @@
 using namespace std; 
 
 void saveLink(char* ip, int port);
-list<struct sockaddr*> listLinks();
+set< pair<char*, int> > listLinks();

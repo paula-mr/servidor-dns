@@ -11,4 +11,4 @@ int createServer(int port, struct sockaddr *storage);
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage);
 void printAddress(const struct sockaddr *addr);
 void receiveMessage(struct sockaddr *address);
-void sendMessage(struct sockaddr *address, char* message);
+void sendMessage(string ip, int port, char* message);

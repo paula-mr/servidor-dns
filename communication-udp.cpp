@@ -9,6 +9,7 @@
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
 #include <string.h>
+#include <string>
 
 #include <arpa/inet.h>
 
@@ -72,10 +73,19 @@ int createServer(int port, struct sockaddr *addressConnected) {
     return SOCKET_VALUE;
 }
 
-void sendMessage(struct sockaddr *address, char* message) {
-    socklen_t len = sizeof(*address);
-    //TODO trocar 0 para MSG_CONFIRM
-    sendto(SOCKET_VALUE, (const char *)message, strlen(message), 0, (const struct sockaddr *) &address, len); 
+void sendMessage(string ip, int port, char* message) {
+    struct sockaddr_in address; 
+    memset(&address, 0, sizeof(address)); 
+
+    struct in_addr inaddr4;
+    inet_pton(AF_INET, ip, &inaddr4);
+
+    address.sin_family = AF_INET; 
+    address.sin_port = htons(port); 
+    address.sin_addr = inaddr4;
+
+    int len;
+    sendto(SOCKET_VALUE, (const char *)message, strlen(message), MSG_CONFIRM, (const struct sockaddr *) &address, sizeof(address)); 
     printf("Enviada com sucesso!\n");
 }
 
@@ -83,7 +93,7 @@ void receiveMessage(struct sockaddr *address) {
     char buffer[MAXLINE]; 
     struct sockaddr_in cliaddr; 
     memset(&cliaddr, 0, sizeof(cliaddr)); 
-    socklen_t len = sizeof(*address);
+    socklen_t len = sizeof(cliaddr);
     int n = recvfrom(SOCKET_VALUE, (char *)buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &cliaddr, &len); 
     buffer[n] = '\0'; 
     printf("estoy aqui 2");

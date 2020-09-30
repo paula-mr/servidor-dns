@@ -50,15 +50,16 @@ int main(int argc, char **argv)
 } 
 
 string searchOtherServers(string hostname) {
-    list<struct sockaddr*> links = listLinks();
+    set< pair<char*, int> > links  = listLinks();
     printf("Procurando em outros servers\n");
+
     for (auto itr = links.begin(); itr != links.end(); ++itr) { 
         printf("realizando parse do end");
         char buffer[3];
         buffer[0] = 'o';
         buffer[1] = 'i';
         buffer[2] = '\0';
-        sendMessage(*itr, buffer);
+        sendMessage(itr->first, itr->second, buffer);
     }
 
     return "";
