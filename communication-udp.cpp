@@ -149,10 +149,10 @@ void printAddress(const struct sockaddr *addr) {
     printf("Conectado em %s.\n", str);
 }
 
-int initializeSocketAddress(const char *proto, int port,
+int initializeSocketAddress(const char *proto, int portString,
                             struct sockaddr_storage *storage)
 {
-    uint16_t port = htons(port);
+    uint16_t port = htons(portString);
 
     memset(storage, 0, sizeof(*storage));
     if (0 == strcmp(proto, "v4"))
