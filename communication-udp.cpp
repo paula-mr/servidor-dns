@@ -53,6 +53,7 @@ void sendMessage(string ip, int port, char* message) {
     struct sockaddr_storage storage;
     memset(&storage, 0, sizeof(storage));  
 
+    printf("Enviando mensagem: %s \n", message);
     parseAddress(ip.c_str(), port, &storage);
 
     int len;
