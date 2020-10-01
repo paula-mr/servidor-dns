@@ -155,7 +155,7 @@ int initializeSocketAddress(const char *proto, int portString,
     {
         struct sockaddr_in *addr4 = (struct sockaddr_in *)storage;
         addr4->sin_family = AF_INET;
-        addr4->sin_addr.s_addr = INADDR_ANY;
+        addr4->sin_addr.s_addr = inet_addr("127.0.0.1");
         addr4->sin_port = port;
         return 0;
     }
@@ -163,7 +163,7 @@ int initializeSocketAddress(const char *proto, int portString,
     {
         struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)storage;
         addr6->sin6_family = AF_INET6;
-        addr6->sin6_addr = in6addr_any;
+        inet_pton(AF_INET6, "::1", &addr6->sin6_addr);
         addr6->sin6_port = port;
         return 0;
     }
