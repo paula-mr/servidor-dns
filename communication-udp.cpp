@@ -61,7 +61,7 @@ void sendMessage(string ip, int port, char* message) {
     printf("Enviada com sucesso!\n");
 }
 
-char* receiveMessage(struct sockaddr *address) {
+string receiveMessage(struct sockaddr *address) {
     char buffer[MAXLINE]; 
     socklen_t len = sizeof(address);
     int n = recvfrom(SOCKET_VALUE, (char *)buffer, MAXLINE, MSG_WAITALL, address, &len); 
@@ -69,7 +69,9 @@ char* receiveMessage(struct sockaddr *address) {
 
     printf("Mensagem: %s \n", buffer);
 
-    return buffer;
+    string message(buffer);
+
+    return message;
 }
 
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage) {

@@ -37,7 +37,7 @@ void *connection_handler(void *portValue) {
         cout << "BUFFER " << buffer << endl;
         if (buffer[0] == '1') {
             string host;
-            for (int i=0; i<strlen(buffer)-1; i++) {
+            for (int i=0; i<static_cast<int>(strlen(buffer))-1; i++) {
                 host += buffer[i+1];
             }
 
@@ -47,9 +47,9 @@ void *connection_handler(void *portValue) {
 
             if (result.compare("") == 0) {
                 printf("host não encontrado\n");
-                char buffer[2];
-                buffer[0] = '2';
-                buffer[1] = '-1';
+                int buffer[2];
+                buffer[0] = 2;
+                buffer[1] = -1;
 
                 //sendMessage();
             }

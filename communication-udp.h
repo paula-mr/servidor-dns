@@ -13,5 +13,5 @@ using namespace std;
 int createServer(int port, struct sockaddr *storage);
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage);
 void printAddress(const struct sockaddr *addr);
-char* receiveMessage(struct sockaddr *address);
+string receiveMessage(struct sockaddr *address);
 void sendMessage(string ip, int port, char* message);
