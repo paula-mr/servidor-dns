@@ -50,18 +50,13 @@ int createServer(int port, struct sockaddr *addressConnected) {
 }
 
 void sendMessage(string ip, int port, char* message) {
-    struct sockaddr_in address; 
-    memset(&address, 0, sizeof(address)); 
+    struct sockaddr_storage storage;
+    memset(&storage, 0, sizeof(storage));  
 
-    struct in_addr inaddr4;
-    inet_pton(AF_INET, ip.c_str(), &inaddr4);
-
-    address.sin_family = AF_INET; 
-    address.sin_port = htons(port); 
-    address.sin_addr = inaddr4;
+    parseAddress(ip.c_str(), port, &storage);
 
     int len;
-    sendto(SOCKET_VALUE, (const char *)message, strlen(message), MSG_CONFIRM, (const struct sockaddr *) &address, sizeof(address)); 
+    sendto(SOCKET_VALUE, (const char *)message, strlen(message), MSG_CONFIRM, (const struct sockaddr *) &storage, sizeof(storage)); 
     printf("Enviada com sucesso!\n");
 }
 
