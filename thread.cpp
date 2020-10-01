@@ -33,33 +33,28 @@ void *connection_handler(void *portValue) {
         struct sockaddr_storage storage;
         memset(&storage, 0, sizeof(storage));  
 
-        char* host = receiveMessage((struct sockaddr *) &storage);
-        string hostString = convertToString(host);
+        char* buffer = receiveMessage((struct sockaddr *) &storage);
+        if (buffer[0] == '1') {
+            string host;
+            for (int i=0; i<strlen(buffer)-1; i++) {
+                host += buffer[i+1];
+            }
 
-        cout << "Host procurado: " << hostString << endl;
+            cout << "Host procurado: " << host << endl;
 
-        string result = searchHost(hostString);
+            string result = searchHost(hostString);
 
-        if (result.compare("") == 0) {
-            printf("host não encontrado\n");
-            char buffer[2];
-            buffer[0] = '2';
-            buffer[1] = '-1';
+            if (result.compare("") == 0) {
+                printf("host não encontrado\n");
+                char buffer[2];
+                buffer[0] = '2';
+                buffer[1] = '-1';
 
-            //sendMessage();
+                //sendMessage();
+            }
         }
     }
 
     return 0;
 }
-
-string convertToString(char* a) { 
-    string s = ""; 
-
-    cout << "CONVERTENDO " << a << endl;
-    for (int i = 0; i < strlen(a); i++) { 
-        s = s + a[i]; 
-    } 
-    return s; 
-} 
   

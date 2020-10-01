@@ -69,20 +69,7 @@ char* receiveMessage(struct sockaddr *address) {
 
     printf("Mensagem: %s \n", buffer);
 
-    if (buffer[0] != '1') {
-        printf("Mensagem desconhecida.");
-        return "";
-    }
-
-    char host[MAXLINE];
-    for (int i=0; i<n-1; i++) {
-        host[i] = buffer[i+1];
-    }
-    host[n-1] = '\0';
-
-    printf("Host recebido: %s \n", host);
-
-    return host;
+    return buffer;
 }
 
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage) {
