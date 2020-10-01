@@ -55,6 +55,18 @@ void *connection_handler(void *portValue) {
                 printAddress((const struct sockaddr *)&storage);
 
                 sendMessage((const struct sockaddr *)&storage, sizeof(storage), buffer);
+            } else {
+                cout << "Endereço do host encontrado: " << host << ": " << result << endl;
+                char buffer[50];
+                buffer[0] = '2';
+                
+                for (int i=0; i<result.length(); i++) {
+                    buffer[i+1] = result.at(0);
+                }
+
+                printAddress((const struct sockaddr *)&storage);
+
+                sendMessage((const struct sockaddr *)&storage, sizeof(storage), buffer);
             }
         }
     }
