@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <string>
 #include <stdio.h> 
+#include <string.h>
 #include <stdlib.h> 
 
 using namespace std; 
@@ -28,8 +29,14 @@ void *connection_handler(void *portValue) {
     cout << "Servidor iniciado!\n";
 
     while (true) {
-        char* host = receiveMessage(&addressConnected);
+        struct sockaddr_storage storage;
+        memset(&storage, 0, sizeof(storage));  
+
+        char* host = receiveMessage((struct sockaddr *) &storage);
         string hostString(host);
+
+        cout << "Host procurado: " << hostString << endl;
+
         string result = searchHost(hostString);
 
         if (result.compare("") == 0) {
