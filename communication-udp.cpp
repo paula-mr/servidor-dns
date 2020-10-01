@@ -80,6 +80,8 @@ char* receiveMessage(struct sockaddr *address) {
     }
     host[n-1] = '\0';
 
+    printf("Host recebido: %s \n", host);
+
     return host;
 }
 
