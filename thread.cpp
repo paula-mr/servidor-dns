@@ -34,6 +34,7 @@ void *connection_handler(void *portValue) {
         memset(&storage, 0, sizeof(storage));  
 
         char* buffer = receiveMessage((struct sockaddr *) &storage);
+        cout << "BUFFER " << buffer << endl;
         if (buffer[0] == '1') {
             string host;
             for (int i=0; i<strlen(buffer)-1; i++) {
@@ -42,7 +43,7 @@ void *connection_handler(void *portValue) {
 
             cout << "Host procurado: " << host << endl;
 
-            string result = searchHost(hostString);
+            string result = searchHost(host);
 
             if (result.compare("") == 0) {
                 printf("host não encontrado\n");
