@@ -60,8 +60,14 @@ string searchOtherServers(string hostname) {
     }
 
     for (auto itr = links.begin(); itr != links.end(); ++itr) { 
-        printf("enviando mensagem");
+        printf("Enviando mensagem\n");
         sendMessage(itr->first, itr->second, buffer);
+
+        struct sockaddr_storage storage;
+        memset(&storage, 0, sizeof(storage));  
+
+        string buffer = receiveMessage((struct sockaddr *) &storage);
+        printf("Mensagem do host: %s \n", buffer);
     }
 
     return "";
