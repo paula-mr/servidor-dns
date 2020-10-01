@@ -12,6 +12,7 @@
 using namespace std; 
 
 void *connection_handler(void *);
+string convertToString(char* a);
 
 void start_connection_handler(char* port) {
     pthread_t thread_id;
@@ -53,9 +54,10 @@ void *connection_handler(void *portValue) {
 }
 
 string convertToString(char* a) { 
-    int i; 
     string s = ""; 
-    for (i = 0; i < strlen(a); i++) { 
+
+    cout << "CONVERTENDO " << a << endl;
+    for (int i = 0; i < strlen(a); i++) { 
         s = s + a[i]; 
     } 
     return s; 
