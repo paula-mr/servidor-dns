@@ -61,11 +61,11 @@ void sendMessage(string ip, int port, char* message) {
     printf("Enviada com sucesso!\n");
 }
 
-void sendMessage(struct sockaddr_storage *storage, char* message) {
+void sendMessage(const struct sockaddr *address, size_t size, char* message) {
     printf("Enviando mensagem: %s \n", message);
 
     int len;
-    sendto(SOCKET_VALUE, (const char *)message, strlen(message), MSG_CONFIRM, (const struct sockaddr *) storage, sizeof(storage)); 
+    sendto(SOCKET_VALUE, (const char *)message, strlen(message), MSG_CONFIRM, address, size); 
     printf("Enviada com sucesso!\n");
 }
 

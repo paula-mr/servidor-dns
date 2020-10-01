@@ -54,7 +54,7 @@ void *connection_handler(void *portValue) {
 
                 printAddress((const struct sockaddr *)&storage);
 
-                sendMessage(&storage, buffer);
+                sendMessage((const struct sockaddr *)&storage, sizeof(storage), buffer);
             }
         }
     }

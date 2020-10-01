@@ -15,4 +15,4 @@ int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *st
 void printAddress(const struct sockaddr *addr);
 string receiveMessage(struct sockaddr *address);
 void sendMessage(string ip, int port, char* message);
-void sendMessage( struct sockaddr_storage *storage, char* message);
+void sendMessage(const struct sockaddr *address, size_t size, char* message);
