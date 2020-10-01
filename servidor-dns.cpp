@@ -8,9 +8,11 @@
 
 string searchOtherServers(string hostname);
 
-int main(int argc, char **argv) 
-{   
-    pthread_t thread_id;
+int main(int argc, char **argv) {   
+    if (argc < 2) {
+        cout << 'É necessário especificar a porta.';
+        exit(1);
+    }
 
     char* port = argv[1];
 
