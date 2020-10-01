@@ -33,7 +33,7 @@ void *connection_handler(void *portValue) {
         memset(&storage, 0, sizeof(storage));  
 
         char* host = receiveMessage((struct sockaddr *) &storage);
-        string hostString(host);
+        string hostString = convertToString(host);
 
         cout << "Host procurado: " << hostString << endl;
 
@@ -51,3 +51,13 @@ void *connection_handler(void *portValue) {
 
     return 0;
 }
+
+string convertToString(char* a) { 
+    int i; 
+    string s = ""; 
+    for (i = 0; i < strlen(a); i++) { 
+        s = s + a[i]; 
+    } 
+    return s; 
+} 
+  
