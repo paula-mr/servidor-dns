@@ -61,7 +61,7 @@ void *connection_handler(void *portValue) {
                 buffer[0] = '2';
                 
                 for (int i=0; i<result.length(); i++) {
-                    buffer[i+1] = result.at(0);
+                    buffer[i+1] = result.at(i);
                 }
 
                 printAddress((const struct sockaddr *)&storage);
