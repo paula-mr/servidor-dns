@@ -46,12 +46,13 @@ void *connection_handler(void *portValue) {
             string result = searchHost(host);
 
             if (result.compare("") == 0) {
-                printf("host não encontrado\n");
-                int buffer[2];
-                buffer[0] = 2;
-                buffer[1] = -1;
+                cout << "Host não encontrado: " << host << endl;
+                char buffer[3];
+                buffer[0] = '2';
+                buffer[1] = '-';
+                buffer[2] = '1';
 
-                //sendMessage();
+                sendMessage(&storage, buffer);
             }
         }
     }
