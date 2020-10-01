@@ -74,10 +74,11 @@ char* receiveMessage(struct sockaddr *address) {
         return "";
     }
 
-    char host[n-1];
+    char host[MAXLINE];
     for (int i=0; i<n-1; i++) {
         host[i] = buffer[i+1];
     }
+    host[n-1] = '\0';
 
     return host;
 }
