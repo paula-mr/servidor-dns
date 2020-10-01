@@ -33,11 +33,11 @@ void *connection_handler(void *portValue) {
         struct sockaddr_storage storage;
         memset(&storage, 0, sizeof(storage));  
 
-        char* buffer = receiveMessage((struct sockaddr *) &storage);
+        string buffer = receiveMessage((struct sockaddr *) &storage);
         cout << "BUFFER " << buffer << endl;
-        if (buffer[0] == '1') {
-            string host;
-            for (int i=0; i<static_cast<int>(strlen(buffer))-1; i++) {
+        if (buffer.at(0) == '1') {
+            string host = "";
+            for (int i=0; i<buffer.length()-1; i++) {
                 host += buffer[i+1];
             }
 
