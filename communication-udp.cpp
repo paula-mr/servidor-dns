@@ -60,9 +60,7 @@ string receiveMessage(struct sockaddr *address, int sock) {
 
     printf("Mensagem: %s \n", buffer);
 
-    string message(buffer);
-
-    return message;
+    return string(buffer);
 }
 
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage) {
