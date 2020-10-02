@@ -78,6 +78,7 @@ string searchOtherServers(string hostname) {
 
         if (buffer.at(0) == '2') {
             string host = buffer.substr(1, buffer.length());
+            cout << "Host retornado: " << host;
             if (!host.compare("-1")) {
                 encontrado = true;
                 hostEncontrado = host;
