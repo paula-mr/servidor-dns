@@ -10,7 +10,7 @@ string searchOtherServers(string hostname);
 
 int main(int argc, char **argv) {   
     if (argc < 2) {
-        cout << 'É necessário especificar a porta.';
+        cout << "É necessário especificar a porta.";
         exit(1);
     }
 
