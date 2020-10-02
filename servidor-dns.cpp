@@ -61,7 +61,9 @@ string searchOtherServers(string hostname) {
         buffer[i+1] = hostname[i];
     }
 
-    for (auto itr = links.begin(); itr != links.end(); ++itr) { 
+    bool encontrado = false;
+    string hostEncontrado;
+    for (auto itr = links.begin(); itr != links.end() && !encontrado; ++itr) { 
         printf("Enviando mensagem\n");
         sendMessage(itr->first, itr->second, buffer);
 
@@ -70,6 +72,20 @@ string searchOtherServers(string hostname) {
 
         string buffer = receiveMessage((struct sockaddr *) &storage);
         printf("Mensagem do host: %s \n", buffer);
+
+        if (buffer.at(0) == '2') {
+            string host = buffer.substr(1, buffer.length());
+            if (!host.compare("-1")) {
+                encontrado = true;
+                hostEncontrado = host;
+            }
+        }
+    }
+
+    if (encontrado) {
+        cout << "Host encontrado: " << hostEncontrado << endl;
+    } else {
+        cout << "Host não encontrado." << endl;
     }
 
     return "";
