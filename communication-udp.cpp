@@ -13,8 +13,6 @@
 
 #define MAXLINE 1024 
 
-int SOCKET_VALUE;
-
 int initializeSocketAddress(const char *proto, int port, struct sockaddr_storage *storage);
 
 int createServer(int port, struct sockaddr *addressConnected) {
@@ -26,53 +24,38 @@ int createServer(int port, struct sockaddr *addressConnected) {
         exit(EXIT_FAILURE);
     }
 
-    if ((SOCKET_VALUE = socket(AF_INET, SOCK_DGRAM, 0)) < 0) { 
-        perror("Erro ao iniciar socket"); 
-        exit(EXIT_FAILURE); 
-    } 
+    int sock = initializeSocket();
 
     int enable = 1;
-    if (setsockopt(SOCKET_VALUE, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
+    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
     {
         perror("Erro ao configurar socket");
         exit(EXIT_FAILURE);
     }
 
     addressConnected = (struct sockaddr *)&storage;
-    if (bind(SOCKET_VALUE, addressConnected, sizeof(storage)) < 0) { 
+    if (bind(sock, addressConnected, sizeof(storage)) < 0) { 
         perror("Erro ao fazer bind"); 
         exit(EXIT_FAILURE); 
     } 
 
     printAddress(addressConnected);
 
-    return SOCKET_VALUE;
+    return sock;
 }
 
-void sendMessage(string ip, int port, char* message) {
-    struct sockaddr_storage storage;
-    memset(&storage, 0, sizeof(storage));  
-
-    printf("Enviando mensagem: %s \n", message);
-    parseAddress(ip.c_str(), port, &storage);
-
-    int len;
-    sendto(SOCKET_VALUE, (const char *)message, strlen(message), MSG_CONFIRM, (const struct sockaddr *) &storage, sizeof(storage)); 
-    printf("Enviada com sucesso!\n");
-}
-
-void sendMessage(const struct sockaddr *address, size_t size, char* message) {
+void sendMessage(const struct sockaddr *address, size_t size, int sock, char* message) {
     printf("Enviando mensagem: %s \n", message);
 
     int len;
-    sendto(SOCKET_VALUE, (const char *)message, strlen(message), MSG_CONFIRM, address, size); 
+    sendto(sock, (const char *)message, strlen(message), MSG_CONFIRM, address, size); 
     printf("Enviada com sucesso!\n");
 }
 
-string receiveMessage(struct sockaddr *address) {
+string receiveMessage(struct sockaddr *address, int sock) {
     char buffer[MAXLINE]; 
     socklen_t len = sizeof(address);
-    int n = recvfrom(SOCKET_VALUE, (char *)buffer, MAXLINE, MSG_WAITALL, address, &len); 
+    int n = recvfrom(sock, (char *)buffer, MAXLINE, MSG_WAITALL, address, &len); 
     buffer[n] = '\0'; 
 
     printf("Mensagem: %s \n", buffer);
@@ -171,4 +154,13 @@ int initializeSocketAddress(const char *proto, int portString,
     {
         return -1;
     }
+}
+
+int initializeSocket() {
+    int sock;
+    if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) { 
+        perror("Erro ao iniciar socket"); 
+        exit(EXIT_FAILURE); 
+    } 
+    return sock;
 }

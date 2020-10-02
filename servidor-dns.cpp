@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 } 
 
 string searchOtherServers(string hostname) {
-    set< pair<char*, int> > links  = listLinks();
+    list< pair<sockaddr_storage, int> > links  = listSockets();
     printf("Procurando em outros servers\n");
 
     char buffer[1 + hostname.length()];
@@ -65,12 +65,15 @@ string searchOtherServers(string hostname) {
     string hostEncontrado;
     for (auto itr = links.begin(); itr != links.end() && !encontrado; ++itr) { 
         printf("Enviando mensagem\n");
-        sendMessage(itr->first, itr->second, buffer);
+        const struct sockaddr *address = (const struct sockaddr*) &(itr->first);
+        int sock = itr->second;
+
+        sendMessage(address, sizeof(itr->first), itr->second, buffer);
 
         struct sockaddr_storage storage;
         memset(&storage, 0, sizeof(storage));  
 
-        string buffer = receiveMessage((struct sockaddr *) &storage);
+        string buffer = receiveMessage((struct sockaddr *) &storage, sock);
         printf("Mensagem do host: %s \n", buffer);
 
         if (buffer.at(0) == '2') {

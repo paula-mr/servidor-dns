@@ -26,14 +26,14 @@ void *connection_handler(void *portValue) {
     char* port = (char*)portValue; 
     struct sockaddr addressConnected;
 
-    createServer(atoi(port), &addressConnected);
+    int sock = createServer(atoi(port), &addressConnected);
     cout << "Servidor iniciado!\n";
 
     while (true) {
         struct sockaddr_storage storage;
         memset(&storage, 0, sizeof(storage));  
 
-        string buffer = receiveMessage((struct sockaddr *) &storage);
+        string buffer = receiveMessage((struct sockaddr *) &storage, sock);
         cout << "BUFFER " << buffer << endl;
         if (buffer.at(0) == '1') {
             string host = "";
@@ -54,7 +54,7 @@ void *connection_handler(void *portValue) {
 
                 printAddress((const struct sockaddr *)&storage);
 
-                sendMessage((const struct sockaddr *)&storage, sizeof(storage), buffer);
+                sendMessage((const struct sockaddr *)&storage, sizeof(storage), sock, buffer);
             } else {
                 cout << "Endereço do host encontrado: " << host << ": " << result << endl;
                 char buffer[50];
@@ -66,7 +66,7 @@ void *connection_handler(void *portValue) {
 
                 printAddress((const struct sockaddr *)&storage);
 
-                sendMessage((const struct sockaddr *)&storage, sizeof(storage), buffer);
+                sendMessage((const struct sockaddr *)&storage, sizeof(storage), sock, buffer);
             }
         }
     }
