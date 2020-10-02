@@ -74,7 +74,7 @@ string searchOtherServers(string hostname) {
         memset(&storage, 0, sizeof(storage));  
 
         string buffer = receiveMessage((struct sockaddr *) &storage, sock);
-        printf("Mensagem do host: %s \n", buffer);
+        cout << "Mensagem do host: " << buffer << endl;
 
         if (buffer.at(0) == '2') {
             string host = buffer.substr(1, buffer.length());
