@@ -39,9 +39,7 @@ int createServer(int port, struct sockaddr *addressConnected) {
 }
 
 void sendMessage(const struct sockaddr *address, size_t size, int sock, char* message) {
-    printf("Enviando mensagem: %s \n", message);
     sendto(sock, (const char *)message, strlen(message), MSG_CONFIRM, address, size); 
-    printf("Enviada com sucesso!\n");
 }
 
 string receiveMessage(struct sockaddr *address, int sock) {
@@ -50,7 +48,6 @@ string receiveMessage(struct sockaddr *address, int sock) {
     int n = recvfrom(sock, (char *)buffer, MAXLINE, MSG_WAITALL, address, &len); 
     if (n > 0) {
         buffer[n] = '\0'; 
-        printf("Mensagem: %s \n", buffer);
         return string(buffer);
     }
 
