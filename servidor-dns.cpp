@@ -62,7 +62,8 @@ void initializeFromFile(string fileName) {
         while (fgets(line, 1024, file)) {
             line[strcspn(line, "\n")] = '\0';
             callCommand(line);            
-        }       
+        }      
+        cout << "Inicialização finalizada." << endl << endl;
     }
 }
 
