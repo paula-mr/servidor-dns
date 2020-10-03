@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 
-void initializeFromFile(char* fileName);
+void initializeFromFile(string fileName);
 void callCommand(string line);
 
 int main(int argc, char **argv) {   
@@ -50,8 +50,8 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void initializeFromFile(char* fileName) {
-    FILE *file = fopen(fileName, "r");
+void initializeFromFile(string fileName) {
+    FILE *file = fopen(fileName.c_str(), "r");
     char *line;
     if (file == NULL){   
         cout << "Arquivo " << fileName << " não encontrado.";                   
