@@ -5,7 +5,7 @@
 #include <string>
 #include <arpa/inet.h>
 
-#define VERSION "v6"
+#define VERSION "v4"
 
 using namespace std;
 
