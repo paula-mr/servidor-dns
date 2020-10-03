@@ -50,8 +50,8 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void initializeFromFile(string fileName) {
-    FILE *file = fopen(fileName.c_str(), "r");
+void initializeFromFile(char* fileName) {
+    FILE *file = fopen(fileName, "r");
     char *line;
     if (file == NULL){   
         cout << "Arquivo " << fileName << " não encontrado.";                   
