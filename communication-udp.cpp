@@ -48,11 +48,13 @@ string receiveMessage(struct sockaddr *address, int sock) {
     char buffer[MAXLINE]; 
     socklen_t len = sizeof(address);
     int n = recvfrom(sock, (char *)buffer, MAXLINE, MSG_WAITALL, address, &len); 
-    buffer[n] = '\0'; 
+    if (n > 0) {
+        buffer[n] = '\0'; 
+        printf("Mensagem: %s \n", buffer);
+        return string(buffer);
+    }
 
-    printf("Mensagem: %s \n", buffer);
-
-    return string(buffer);
+    return "";
 }
 
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage) {
