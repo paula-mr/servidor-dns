@@ -22,17 +22,14 @@ void saveHost(string hostname, string ip) {
 
 string searchHost(string hostname) {
     if (hosts.find(hostname) != hosts.end()) {
-        cout << "Hostname: " << hosts[hostname] << endl;
         return hosts[hostname];
     } else {
-        cout << "Hostname \"" << hostname << "\" não encontrado. Procurando outros servers..." << endl;
         return searchOtherServers(hostname);
     }
 }
 
 string searchOtherServers(string hostname) {
     list< pair<sockaddr_storage, int> > links  = listSockets();
-    printf("Procurando em outros servers\n");
 
     char buffer[1 + hostname.length()];
     buffer[0] = '1';
@@ -45,7 +42,6 @@ string searchOtherServers(string hostname) {
     bool encontrado = false;
     string hostEncontrado = "";
     for (auto itr = links.begin(); itr != links.end() && !encontrado; ++itr) { 
-        printf("Enviando mensagem\n");
         const struct sockaddr *address = (const struct sockaddr*) &(itr->first);
         int sock = itr->second;
 
@@ -55,11 +51,8 @@ string searchOtherServers(string hostname) {
         memset(&storage, 0, sizeof(storage));  
 
         string buffer = receiveMessage((struct sockaddr *) &storage, sock);
-        cout << "Mensagem do host: " << buffer << endl;
-
         if (buffer.at(0) == '2') {
             string host = buffer.substr(1, buffer.length());
-            cout << "Host retornado: " << host << endl;
             if (host.compare("-1")) {
                 encontrado = true;
                 hostEncontrado = host;

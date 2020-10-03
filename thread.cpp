@@ -36,20 +36,13 @@ void *connectionHandler(void *portValue) {
         string buffer = receiveMessage((struct sockaddr *) &storage, sock);
         if (buffer.at(0) == '1') {
             string host = buffer.substr(1, buffer.length());
-
-            cout << "Host procurado: " << host << endl;
-
             string result = searchHost(host);
 
             if (result.compare("") == 0) {
-                cout << "Host não encontrado: " << host << endl;
                 char* buffer = initializeBufferHostNotFound();
-
                 sendMessage((const struct sockaddr *)&storage, sizeof(storage), sock, buffer);
             } else {
-                cout << "Endereço do host encontrado: " << host << ": " << result << endl;
                 char* buffer = initializeBufferHostFound(result);
-
                 sendMessage((const struct sockaddr *)&storage, sizeof(storage), sock, buffer);
             }
         }

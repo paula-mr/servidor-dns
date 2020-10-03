@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
 
     while (true) {
         string comando;
-        cout << "Digite o seu comando: ";
+        cout << endl << "Digite o seu comando: ";
         cin >> comando;
 
         if (comando.compare("add") == 0) {
@@ -36,6 +36,8 @@ int main(int argc, char **argv) {
             string hostname, ip;
             cin >> hostname;
             ip = searchHost(hostname);
+
+            cout << "Host " << hostname << " encontrado: " << ip << endl;
         } else if (comando.compare("link") == 0) {
             string ip;
             int porta;
@@ -52,7 +54,7 @@ int main(int argc, char **argv) {
 
 void initializeFromFile(string fileName) {
     FILE *file = fopen(fileName.c_str(), "r");
-    char *line;
+    char line[1024];
     if (file == NULL){   
         cout << "Arquivo " << fileName << " não encontrado.";                   
         exit(1);
