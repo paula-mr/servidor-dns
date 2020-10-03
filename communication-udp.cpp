@@ -139,9 +139,9 @@ int initializeSocketAddress(const char *proto, int portString,
     }
 }
 
-int initializeSocket() {
+int initializeSocket(int version) {
     int sock;
-    if ((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) { 
+    if ((sock = socket(version, SOCK_DGRAM, 0)) < 0) { 
         perror("Erro ao iniciar socket"); 
         exit(EXIT_FAILURE); 
     } 
