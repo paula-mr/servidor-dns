@@ -1,3 +1,3 @@
 #pragma once
 
-void start_connection_handler(char* port);
+void startConnectionHandler(char* port);

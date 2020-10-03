@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     }
 
     char* port = argv[1];
-    start_connection_handler(port);
+    startConnectionHandler(port);
     sleep(1);
 
     while (true) {

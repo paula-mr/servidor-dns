@@ -14,6 +14,7 @@ void saveLink(string ip, int port) {
 
         if (parseAddress(ip.c_str(), port, &storage) < 0) {
             cout << "Endereço inválido para link." << endl;
+            return;
         }
 
         links.insert(pair<const char*, int> (ip.c_str(), port));

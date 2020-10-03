@@ -59,7 +59,7 @@ void *connectionHandler(void *portValue) {
 }
 
 char* initializeBufferHostNotFound() {
-    char buffer[4];
+    char *buffer = (char *) malloc(4);
     buffer[0] = '2';
     buffer[1] = '-';
     buffer[2] = '1';
@@ -69,7 +69,7 @@ char* initializeBufferHostNotFound() {
 }
 
 char* initializeBufferHostFound(string ip) {
-    char buffer[50];
+    char *buffer = (char *) malloc(50);
     buffer[0] = '2';
     
     for (long unsigned int i=0; i<ip.length(); i++) {
