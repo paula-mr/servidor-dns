@@ -60,11 +60,5 @@ string searchOtherServers(string hostname) {
         }
     }
 
-    if (encontrado) {
-        cout << "Host encontrado: " << hostEncontrado << endl;
-    } else {
-        cout << "Host não encontrado." << endl;
-    }
-
     return hostEncontrado;
 }
