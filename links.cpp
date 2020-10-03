@@ -1,19 +1,22 @@
 #include "links.h"
 #include "communication-udp.h"
+
 #include <unistd.h>
 #include <string.h>
 
-set< pair<char*, int> > links;
+set< pair<const char*, int> > links;
 list< pair<sockaddr_storage, int> > sockets;
 
-void saveLink(char* ip, int port) {
-    if (links.find(pair<char*, int> (ip, port)) == links.end()) {
+void saveLink(string ip, int port) {
+    if (links.find(pair<const char*, int> (ip.c_str(), port)) == links.end()) {
         struct sockaddr_storage storage;
         memset(&storage, 0, sizeof(storage));
 
-        parseAddress(ip, port, &storage);
+        if (parseAddress(ip.c_str(), port, &storage) < 0) {
+            cout << "Endereço inválido para link." << endl;
+        }
 
-        links.insert(pair<char*, int> (ip, port));
+        links.insert(pair<const char*, int> (ip.c_str(), port));
         sockets.push_back(pair<sockaddr_storage, int> (storage, initializeSocket()));
         cout << "Salvo link ip: " << ip << "; porta: " << port << endl;
     } else {

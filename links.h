@@ -11,5 +11,5 @@
 
 using namespace std; 
 
-void saveLink(char* ip, int port);
+void saveLink(string ip, int port);
 list< pair<sockaddr_storage, int> > listSockets();

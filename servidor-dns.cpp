@@ -21,6 +21,7 @@ int main(int argc, char **argv) {
             return -1;
         }
         else {
+            cout << "Inicializando servidor a partir do arquivo..." << endl;
             while(fgets(linha, 1024, file)) {
                 linha[strcspn(linha, "\n")] = '\0';
                 chamarComando(linha);            
@@ -67,18 +68,11 @@ void chamarComando(string linha) {
     linha.erase(0, linha.find(' ') + 1);
     string segundoParametro = linha;
 
-    cout << "COMANDO: " << comando << ' ' << primeiroParametro << ' ' << segundoParametro << endl;
-
-    /*if (comando.compare("add") == 0) {
-        string hostname, ip;
-        cin >> hostname >> ip;
-        saveHost(hostname, ip);
+    if (comando.compare("add") == 0) {
+        saveHost(primeiroParametro, segundoParametro);
     } else if (comando.compare("link") == 0) {
-        char ip[45];
-        int porta;
-        cin >> ip >> porta;
-        saveLink(ip, porta);
+        saveLink(primeiroParametro.c_str(), atoi(segundoParametro.c_str()));
     } else {
-        cout << "Comando não encontrado." << endl;
-    }*/
+        cout << "Comando inválido para inicialização." << endl;
+    }
 }
