@@ -54,7 +54,7 @@ string receiveMessage(struct sockaddr *address, int sock) {
         return string(buffer);
     }
 
-    return "";
+    return "2-1";
 }
 
 int parseAddress(const char *addrstr, int portValue, struct sockaddr_storage *storage) {
