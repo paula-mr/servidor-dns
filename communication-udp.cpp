@@ -86,7 +86,7 @@ void printAddress(const struct sockaddr *addr) {
     int version;
     char addrstr[INET6_ADDRSTRLEN + 1] = "";
     uint16_t port;
-    char str[BUFSZ];
+    char str[MAXLINE];
 
     if (addr->sa_family == AF_INET) {
         version = 4;
@@ -113,7 +113,7 @@ void printAddress(const struct sockaddr *addr) {
         exit(EXIT_FAILURE);
     }
 
-    snprintf(str, BUFSZ, "IPv%d %s %hu", version, addrstr, port);
+    snprintf(str, MAXLINE, "IPv%d %s %hu", version, addrstr, port);
     printf("Conectado em %s.\n\n\n", str);
 }
 

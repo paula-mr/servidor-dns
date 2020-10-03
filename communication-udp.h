@@ -5,8 +5,7 @@
 #include <string>
 #include <arpa/inet.h>
 
-#define BUFSZ 1024
-#define VERSION "v4"
+#define VERSION "v6"
 
 using namespace std;
 
