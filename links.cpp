@@ -17,8 +17,19 @@ void saveLink(string ip, int port) {
             return;
         }
 
+        int sock = initializeSocket(storage.ss_family);
+
+        struct timeval timeout;
+        timeout.tv_sec = 0;
+        timeout.tv_usec = 100000;
+        if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) != 0) {
+            perror("Erro ao configurar socket");
+            exit(EXIT_FAILURE);
+        }
+
+
         links.insert(pair<const char*, int> (ip.c_str(), port));
-        sockets.push_back(pair<sockaddr_storage, int> (storage, initializeSocket(storage.ss_family)));
+        sockets.push_back(pair<sockaddr_storage, int> (storage, sock));
         cout << "Salvo link ip: " << ip << "; porta: " << port << endl;
     } else {
         cout << "Link já existente." << endl;

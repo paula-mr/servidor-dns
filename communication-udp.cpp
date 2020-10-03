@@ -20,6 +20,13 @@ int createServer(int port, struct sockaddr *addressConnected) {
 
     int sock = initializeSocket(storage.ss_family);
 
+    int enable = 1;	
+    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)	
+    {	
+        perror("Erro ao configurar socket");	
+        exit(EXIT_FAILURE);	
+    }
+
     addressConnected = (struct sockaddr *)&storage;
     if (bind(sock, addressConnected, sizeof(storage)) < 0) { 
         perror("Erro ao fazer bind"); 
@@ -145,14 +152,5 @@ int initializeSocket(int version) {
         perror("Erro ao iniciar socket"); 
         exit(EXIT_FAILURE); 
     } 
-
-    struct timeval timeout;
-    timeout.tv_sec = 0;
-    timeout.tv_usec = 100000;
-    if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &timeout, sizeof(timeout)) != 0) {
-        perror("Erro ao configurar socket");
-        exit(EXIT_FAILURE);
-    }
-
     return sock;
 }
