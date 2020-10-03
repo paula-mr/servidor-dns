@@ -18,7 +18,7 @@ int createServer(int port, struct sockaddr *addressConnected) {
         exit(EXIT_FAILURE);
     }
 
-    int sock = initializeSocket();
+    int sock = initializeSocket(storage.ss_family);
 
     addressConnected = (struct sockaddr *)&storage;
     if (bind(sock, addressConnected, sizeof(storage)) < 0) { 

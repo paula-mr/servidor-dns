@@ -18,7 +18,7 @@ void saveLink(string ip, int port) {
         }
 
         links.insert(pair<const char*, int> (ip.c_str(), port));
-        sockets.push_back(pair<sockaddr_storage, int> (storage, initializeSocket()));
+        sockets.push_back(pair<sockaddr_storage, int> (storage, initializeSocket(storage.ss_family)));
         cout << "Salvo link ip: " << ip << "; porta: " << port << endl;
     } else {
         cout << "Link já existente." << endl;
