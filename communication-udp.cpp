@@ -40,8 +40,6 @@ int createServer(int port, struct sockaddr *addressConnected) {
 
 void sendMessage(const struct sockaddr *address, size_t size, int sock, char* message) {
     printf("Enviando mensagem: %s \n", message);
-
-    int len;
     sendto(sock, (const char *)message, strlen(message), MSG_CONFIRM, address, size); 
     printf("Enviada com sucesso!\n");
 }

@@ -6,7 +6,8 @@
 #include <unistd.h>
 #include <string.h>
 
-void chamarComando(string linha);
+void initializeFromFile();
+void callCommand(string line);
 
 int main(int argc, char **argv) {   
     if (argc < 2) {
@@ -14,23 +15,11 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    if(argc == 3) {
-        FILE *file = fopen(argv[2],"r");
-        char *linha;
-        if (file == NULL){                       
-            return -1;
-        }
-        else {
-            cout << "Inicializando servidor a partir do arquivo..." << endl;
-            while(fgets(linha, 1024, file)) {
-                linha[strcspn(linha, "\n")] = '\0';
-                chamarComando(linha);            
-            }       
-        }
+    if (argc == 3) {
+       initializeFromFile(argv[2]);
     }
 
     char* port = argv[1];
-
     start_connection_handler(port);
     sleep(1);
 
@@ -48,7 +37,7 @@ int main(int argc, char **argv) {
             cin >> hostname;
             ip = searchHost(hostname);
         } else if (comando.compare("link") == 0) {
-            char ip[45];
+            string ip;
             int porta;
             cin >> ip >> porta;
             saveLink(ip, porta);
@@ -61,17 +50,33 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void chamarComando(string linha) {
-    string comando = linha.substr(0, linha.find(' '));
-    linha.erase(0, linha.find(' ') + 1);
-    string primeiroParametro = linha.substr(0, linha.find(' '));
-    linha.erase(0, linha.find(' ') + 1);
-    string segundoParametro = linha;
+void initializeFromFile(string fileName) {
+    FILE *file = fopen(fileName.c_str(), "r");
+    char *line;
+    if (file == NULL){   
+        cout << "Arquivo " << fileName << " não encontrado.";                   
+        exit(1);
+    }
+    else {
+        cout << "Inicializando servidor a partir do arquivo..." << endl;
+        while (fgets(line, 1024, file)) {
+            line[strcspn(line, "\n")] = '\0';
+            callCommand(line);            
+        }       
+    }
+}
+
+void callCommand(string line) {
+    string comando = line.substr(0, line.find(' '));
+    line.erase(0, line.find(' ') + 1);
+    string primeiroParametro = line.substr(0, line.find(' '));
+    line.erase(0, line.find(' ') + 1);
+    string segundoParametro = line;
 
     if (comando.compare("add") == 0) {
         saveHost(primeiroParametro, segundoParametro);
     } else if (comando.compare("link") == 0) {
-        saveLink(primeiroParametro.c_str(), atoi(segundoParametro.c_str()));
+        saveLink(primeiroParametro, atoi(segundoParametro.c_str()));
     } else {
         cout << "Comando inválido para inicialização." << endl;
     }

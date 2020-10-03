@@ -37,9 +37,10 @@ string searchOtherServers(string hostname) {
     char buffer[1 + hostname.length()];
     buffer[0] = '1';
 
-    for (int i=0; i < hostname.length(); i++) {
+    for (long unsigned int i=0; i < hostname.length(); i++) {
         buffer[i+1] = hostname[i];
     }
+    buffer[hostname.length()] = '\0';
 
     bool encontrado = false;
     string hostEncontrado = "";

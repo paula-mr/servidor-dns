@@ -12,14 +12,13 @@
 using namespace std; 
 
 void *connection_handler(void *);
-string convertToString(char* a);
 
 void start_connection_handler(char* port) {
     pthread_t thread_id;
     if (pthread_create(&thread_id, NULL, connection_handler, (void*) port) < 0) {
-        perror("Não foi possível iniciar a thread.");
+        perror("Não foi possível iniciar a thread");
     }
-    cout << "Thread de conexões aberta com sucesso! Iniciando servidor...\n" << endl;
+    cout << "Thread de conexões aberta com sucesso! Iniciando servidor..." << endl;
 }
 
 void *connection_handler(void *portValue) {
@@ -27,7 +26,7 @@ void *connection_handler(void *portValue) {
     struct sockaddr addressConnected;
 
     int sock = createServer(atoi(port), &addressConnected);
-    cout << "Servidor iniciado!\n";
+    cout << "Servidor iniciado!" << endl;
 
     while (true) {
         struct sockaddr_storage storage;
@@ -36,10 +35,7 @@ void *connection_handler(void *portValue) {
         string buffer = receiveMessage((struct sockaddr *) &storage, sock);
         cout << "BUFFER " << buffer << endl;
         if (buffer.at(0) == '1') {
-            string host = "";
-            for (int i=0; i<buffer.length()-1; i++) {
-                host += buffer[i+1];
-            }
+            string host = buffer.substr(1, buffer.length());
 
             cout << "Host procurado: " << host << endl;
 
@@ -61,9 +57,10 @@ void *connection_handler(void *portValue) {
                 char buffer[50];
                 buffer[0] = '2';
                 
-                for (int i=0; i<result.length(); i++) {
+                for (long unsigned int i=0; i<result.length(); i++) {
                     buffer[i+1] = result.at(i);
                 }
+                buffer[result.length() + 1] = '\0';
 
                 printAddress((const struct sockaddr *)&storage);
 
