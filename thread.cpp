@@ -11,29 +11,29 @@
 
 using namespace std; 
 
-void *connection_handler(void *);
+void *connectionHandler(void *);
+char* initializeBufferHostNotFound();
+char* initializeBufferHostFound(string ip);
 
-void start_connection_handler(char* port) {
+void startConnectionHandler(char* port) {
     pthread_t thread_id;
-    if (pthread_create(&thread_id, NULL, connection_handler, (void*) port) < 0) {
+    if (pthread_create(&thread_id, NULL, connectionHandler, (void*) port) < 0) {
         perror("Não foi possível iniciar a thread");
     }
     cout << "Thread de conexões aberta com sucesso! Iniciando servidor..." << endl;
 }
 
-void *connection_handler(void *portValue) {
+void *connectionHandler(void *portValue) {
     char* port = (char*)portValue; 
     struct sockaddr addressConnected;
 
     int sock = createServer(atoi(port), &addressConnected);
-    cout << "Servidor iniciado!" << endl;
 
     while (true) {
         struct sockaddr_storage storage;
         memset(&storage, 0, sizeof(storage));  
 
         string buffer = receiveMessage((struct sockaddr *) &storage, sock);
-        cout << "BUFFER " << buffer << endl;
         if (buffer.at(0) == '1') {
             string host = buffer.substr(1, buffer.length());
 
@@ -43,26 +43,12 @@ void *connection_handler(void *portValue) {
 
             if (result.compare("") == 0) {
                 cout << "Host não encontrado: " << host << endl;
-                char buffer[4];
-                buffer[0] = '2';
-                buffer[1] = '-';
-                buffer[2] = '1';
-                buffer[3] = '\0';
-
-                printAddress((const struct sockaddr *)&storage);
+                char* buffer = initializeBufferHostNotFound();
 
                 sendMessage((const struct sockaddr *)&storage, sizeof(storage), sock, buffer);
             } else {
                 cout << "Endereço do host encontrado: " << host << ": " << result << endl;
-                char buffer[50];
-                buffer[0] = '2';
-                
-                for (long unsigned int i=0; i<result.length(); i++) {
-                    buffer[i+1] = result.at(i);
-                }
-                buffer[result.length() + 1] = '\0';
-
-                printAddress((const struct sockaddr *)&storage);
+                char* buffer = initializeBufferHostFound(result);
 
                 sendMessage((const struct sockaddr *)&storage, sizeof(storage), sock, buffer);
             }
@@ -71,4 +57,25 @@ void *connection_handler(void *portValue) {
 
     return 0;
 }
-  
+
+char* initializeBufferHostNotFound() {
+    char buffer[4];
+    buffer[0] = '2';
+    buffer[1] = '-';
+    buffer[2] = '1';
+    buffer[3] = '\0';
+
+    return buffer;
+}
+
+char* initializeBufferHostFound(string ip) {
+    char buffer[50];
+    buffer[0] = '2';
+    
+    for (long unsigned int i=0; i<ip.length(); i++) {
+        buffer[i+1] = ip.at(i);
+    }
+    buffer[ip.length() + 1] = '\0';
+
+    return buffer;
+}

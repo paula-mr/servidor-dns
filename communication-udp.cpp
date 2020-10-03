@@ -115,7 +115,7 @@ void printAddress(const struct sockaddr *addr) {
     }
 
     snprintf(str, BUFSZ, "IPv%d %s %hu", version, addrstr, port);
-    printf("Conectado em %s.\n", str);
+    printf("Conectado em %s.\n\n\n", str);
 }
 
 int initializeSocketAddress(const char *proto, int portString,
