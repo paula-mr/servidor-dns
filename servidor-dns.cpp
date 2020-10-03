@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
             cin >> hostname;
             ip = searchHost(hostname);
 
-            if (ip.compare("")) {
+            if (ip.compare("") == 0) {
                 cout << "Host " << hostname << " não encontrado. " << endl;
             } else {
                 cout << "Host " << hostname << " encontrado: " << ip << endl;
