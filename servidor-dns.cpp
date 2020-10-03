@@ -22,9 +22,9 @@ int main(int argc, char **argv) {
         }
         else {
             while(fgets(linha, 1024, file)) {
-                linha[strcspn(linha, "\n")] = '';
-                chamarComando(linha);            }       
-
+                linha[strcspn(linha, "\n")] = '\0';
+                chamarComando(linha);            
+            }       
         }
     }
 
