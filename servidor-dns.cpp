@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <string.h>
 
-void initializeFromFile();
+void initializeFromFile(string fileName);
 void callCommand(string line);
 
 int main(int argc, char **argv) {   
