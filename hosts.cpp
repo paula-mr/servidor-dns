@@ -40,7 +40,7 @@ string searchOtherServers(string hostname) {
     for (long unsigned int i=0; i < hostname.length(); i++) {
         buffer[i+1] = hostname[i];
     }
-    buffer[hostname.length()] = '\0';
+    buffer[hostname.length()+1] = '\0';
 
     bool encontrado = false;
     string hostEncontrado = "";
